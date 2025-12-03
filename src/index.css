@@ -1,0 +1,23 @@
+@import "tailwindcss";
+body {
+  font-family: "Lora", serif;
+  background: #410657;
+  background: -webkit-linear-gradient(
+    0deg,
+    rgba(65, 6, 87, 1) 0%,
+    rgba(34, 34, 34, 1) 100%
+  );
+  background: -moz-linear-gradient(
+    0deg,
+    rgba(65, 6, 87, 1) 0%,
+    rgba(34, 34, 34, 1) 100%
+  );
+  background: linear-gradient(
+    0deg,
+    rgba(65, 6, 87, 1) 0%,
+    rgba(34, 34, 34, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#410657", endColorstr="#222222", GradientType=0);
+  margin: 0;
+  min-height: 100vh;
+}
