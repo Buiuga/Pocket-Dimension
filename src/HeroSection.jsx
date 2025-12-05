@@ -1,10 +1,16 @@
-// src/components/HeroSection.jsx
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   // Define the animation properties
+
+  const navigate = useNavigate();
+  const handleEnterClick = () => {
+    navigate("/home");
+  };
+
   const animationVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -30,7 +36,6 @@ const HeroSection = () => {
   };
 
   return (
-    // 3. Reverted tags back to motion.section, motion.h1, etc.
     <motion.section
       className="min-h-screen flex flex-col items-center justify-center p-6 text-center"
       variants={containerVariants}
@@ -48,10 +53,11 @@ const HeroSection = () => {
         className="text-xl sm:text-2xl text-gray-300 max-w-md mb-8"
         variants={animationVariants}
       >
-        This is <strong className="font-bold">your</strong> space.
+        This is <strong className="font-bold text-white">your</strong> space.
       </motion.p>
 
       <motion.button
+        onClick={handleEnterClick}
         className="
           bg-white 
           text-[#290956] 

@@ -1,9 +1,14 @@
 import HeroSection from "./HeroSection";
+import Dashboard from "./Dashboard";
+import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
       <div>
-        <HeroSection />
+        <Routes>
+          <Route path="/" element={<HeroSection />} />
+          <Route path="/home" element={<Dashboard />} />
+        </Routes>
       </div>
     </>
   );
