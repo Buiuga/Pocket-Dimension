@@ -34,7 +34,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center">
+    <div className="min-h-screen p-6 purple-bg-gradient flex flex-col items-center">
       {/* 2. THE GREETING CARD */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

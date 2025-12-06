@@ -37,7 +37,7 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      className="min-h-screen flex flex-col items-center justify-center p-6 text-center"
+      className="min-h-screen purple-bg-gradient flex flex-col items-center justify-center p-6 text-center"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

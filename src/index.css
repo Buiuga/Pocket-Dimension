@@ -1,6 +1,12 @@
 @import "tailwindcss";
 body {
   font-family: "Lora", serif;
+  background: #222;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.purple-bg-gradient {
   background: #410657;
   background: -webkit-linear-gradient(
     0deg,
@@ -18,6 +24,4 @@ body {
     rgba(34, 34, 34, 1) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#410657", endColorstr="#222222", GradientType=0);
-  margin: 0;
-  min-height: 100vh;
 }

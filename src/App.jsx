@@ -1,5 +1,6 @@
 import HeroSection from "./HeroSection";
 import Dashboard from "./Dashboard";
+import Pomodoro from "./Pomodoro";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HeroSection />} />
           <Route path="/home" element={<Dashboard />} />
+          <Route path="pomodoro" element={<Pomodoro />} />
         </Routes>
       </div>
     </>
