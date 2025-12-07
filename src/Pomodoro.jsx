@@ -97,8 +97,8 @@ const Pomodoro = () => {
           Focus & Flow
         </h2>
         <p className="text-gray-200 text-lg leading-relaxed font-light">
-          "Sometimes you lose track of time, and that's okay. But remember,
-          breaks are just as important as being focused."
+          Sometimes you lose track of time, and that's okay. But remember,
+          breaks are just as important as being focused.
         </p>
       </motion.div>
 

@@ -1,5 +1,5 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const features = [
   { id: 1, title: "Pomodoro Timer", path: "/pomodoro", icon: "⏳" },
   { id: 2, title: "Wheel of Fate", path: "/decisionMaker", icon: "🎡" },
-  { id: 3, title: "Quote Generator", path: "/quotes", icon: "💬" },
+  { id: 3, title: "Borrowed Wisdom", path: "/quotes", icon: "💬" },
   { id: 4, title: "Reset Breath", path: "/breathing", icon: "🔄" },
   { id: 5, title: "Bubble Wrap", path: "/bubbles", icon: "🫧" },
   { id: 6, title: "Starry Sky", path: "/stars", icon: "🌌" },
