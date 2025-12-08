@@ -13,6 +13,9 @@ const WHEEL_COLORS = [
   "#0ea5e9", // Sky
 ];
 
+// Sound effect for the wheel
+const SPIN_SOUND = "../Public/WheelSpin.mp3";
+
 const WheelofFate = () => {
   const navigate = useNavigate();
 
@@ -44,12 +47,21 @@ const WheelofFate = () => {
     setIsSpinning(true);
     setWinner(null);
 
+    // Added: Start the sound
+    const spinAudio = new Audio(SPIN_SOUND);
+    spinAudio.volume = 0.3;
+    spinAudio.loop = false; // Loops the clicking sound while spinning
+    spinAudio.play().catch(() => {}); // Catch errors if browser blocks autoplay
+
     // 5 spins (1800) + random angle
     const randomAngle = Math.floor(Math.random() * 360);
     const newRotation = rotation + 1800 + randomAngle;
     setRotation(newRotation);
 
     setTimeout(() => {
+      spinAudio.pause();
+      spinAudio.currentTime = 0;
+
       setIsSpinning(false);
 
       const degrees = newRotation % 360;
