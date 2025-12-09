@@ -94,7 +94,7 @@ const WheelofFate = () => {
     <div className="min-h-screen bg-gradient-to-br from-teal-900 via-emerald-900 to-teal-950 p-6 flex flex-col items-center overflow-hidden">
       <button
         onClick={() => navigate("/home")}
-        className="absolute top-6 left-6 text-white/70 hover:text-emerald-400 text-xl transition-colors z-20"
+        className="absolute top-6 left-6 text-white/70 hover:text-gray-200 text-xl transition-colors z-20"
       >
         ← Back
       </button>

@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const POP_SOUNDS = ["/pop1.mp3", "/pop2.mp3", "/pop3.mp3"];
+const POP_SOUNDS = [
+  "../Public/pop1.mp3",
+  "../Public/pop2.mp3",
+  "../Public/pop3.mp3",
+];
 
 const GRID_SIZE = 48;
 
@@ -69,6 +73,7 @@ const BubbleWrap = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
         className="w-full max-w-xl bg-white/10 backdrop-blur-md border border-pink-300/30 rounded-2xl p-6 text-center shadow-xl mb-8"
       >
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">

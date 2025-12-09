@@ -6,6 +6,7 @@ import BorrowedWisdom from "./BorrowedWisdom";
 import ResetBreath from "./ResetBreath";
 import BubbleWrap from "./BubbleWrap";
 import { Routes, Route } from "react-router-dom";
+import StarrySky from "./StarrySky";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
           <Route path="quotes" element={<BorrowedWisdom />} />
           <Route path="breathing" element={<ResetBreath />} />
           <Route path="bubbles" element={<BubbleWrap />} />
+          <Route path="stars" element={<StarrySky />} />
         </Routes>
       </div>
     </>
