@@ -244,7 +244,7 @@ const StarrySky = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 2 }}
+          transition={{ duration: 1 }}
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center pointer-events-auto select-none"
         >
           <h2 className="text-white/80 font-bold text-lg tracking-widest uppercase mb-1">
