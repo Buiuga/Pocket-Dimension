@@ -3,6 +3,7 @@ import Dashboard from "./Dashboard";
 import Pomodoro from "./Pomodoro";
 import WheelofFate from "./WheelofFate";
 import BorrowedWisdom from "./BorrowedWisdom";
+import ResetBreath from "./ResetBreath";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="pomodoro" element={<Pomodoro />} />
           <Route path="decisionMaker" element={<WheelofFate />} />
           <Route path="quotes" element={<BorrowedWisdom />} />
+          <Route path="breathing" element={<ResetBreath />} />
         </Routes>
       </div>
     </>

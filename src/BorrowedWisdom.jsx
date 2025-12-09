@@ -34,6 +34,7 @@ const BorrowedWisdom = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
         className="w-full max-w-2xl bg-amber-950/40 backdrop-blur-md border border-amber-500/20 rounded-2xl p-8 text-center shadow-xl mb-10"
       >
         <h2 className="text-3xl md:text-4xl font-bold text-amber-100 mb-3 tracking-wide">
@@ -49,7 +50,7 @@ const BorrowedWisdom = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
+        transition={{ duration: 0.8 }}
         className="
             relative
             w-full max-w-3xl 

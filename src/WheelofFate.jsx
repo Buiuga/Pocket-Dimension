@@ -105,6 +105,7 @@ const WheelofFate = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
         className="w-full max-w-2xl bg-teal-950/40 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-6 text-center shadow-xl mb-8 relative z-10"
       >
         <h2 className="text-2xl md:text-3xl font-bold text-cyan-100 mb-2">
