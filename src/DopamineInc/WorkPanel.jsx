@@ -24,7 +24,7 @@ const WorkPanel = ({ game }) => {
     tick,
     handleItemClick,
     handleUnlock,
-    getManualCost, // <--- 1. ADD THIS IMPORT
+    getManualCost,
   } = game;
 
   return (
@@ -44,7 +44,6 @@ const WorkPanel = ({ game }) => {
             <button
               key={item.id}
               onClick={() => handleUnlock(item)}
-              // 3. USE currentCost INSTEAD OF item.unlockCost
               disabled={dopamine < currentCost}
               className={`
                 relative h-24 rounded-xl border-2 border-dashed flex flex-col items-center justify-center transition-all

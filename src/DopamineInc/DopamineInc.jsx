@@ -19,7 +19,7 @@ const DopamineInc = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-700 via-orange-600 to-amber-700 p-4 md:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-orange-800 via-orange-700/80 to-amber-800 p-4 md:p-8 flex flex-col items-center">
       <button
         onClick={() => navigate("/home")}
         className="absolute top-4 left-4 text-orange-200/70 hover:text-white text-lg transition-colors z-20"

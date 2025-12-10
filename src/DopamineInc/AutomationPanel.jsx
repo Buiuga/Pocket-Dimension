@@ -31,8 +31,13 @@ const AutomationPanel = ({ game }) => {
           ITEMS_DATA.find((i) => i.id === auto.targets[0])?.name ||
           "Unknown Item";
 
-        // 2. Calculate the specific cost for this item (applies Bolg/Creator discounts)
+        // 2. Calculate the specific cost for this item
         const currentCost = getAutoCost(auto);
+
+        // 3. NEW: Get the actual names of the target items
+        const targetNames = auto.targets
+          .map((tId) => ITEMS_DATA.find((i) => i.id === tId)?.name)
+          .join(" & ");
 
         return (
           <div
@@ -59,7 +64,8 @@ const AutomationPanel = ({ game }) => {
                   targetsUnlocked ? "text-orange-200" : "text-gray-500"
                 } text-sm`}
               >
-                Automates: {auto.targets.length > 1 ? "Donuts" : "Item"}
+                {/* Display the real names here */}
+                Automates: {targetNames}
               </p>
             </div>
 

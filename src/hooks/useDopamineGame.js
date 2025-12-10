@@ -92,8 +92,6 @@ export const useDopamineGame = () => {
     if (owned.includes("art_10")) artifactCostMult *= 0.9; // Creator (assumed 'All Costs' includes artifacts)
 
     // Passive Generation
-    // Note: Ogrul removed from passive gain based on new request
-
     // Baghera & Doris Synergy
     const hasBaghera = owned.includes("art_8");
     const hasDoris = owned.includes("art_9");
