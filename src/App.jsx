@@ -7,6 +7,7 @@ import ResetBreath from "./ResetBreath";
 import BubbleWrap from "./BubbleWrap";
 import { Routes, Route } from "react-router-dom";
 import StarrySky from "./StarrySky";
+import DopamineInc from "./DopamineInc/DopamineInc";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
           <Route path="breathing" element={<ResetBreath />} />
           <Route path="bubbles" element={<BubbleWrap />} />
           <Route path="stars" element={<StarrySky />} />
+          <Route path="dopamineInc" element={<DopamineInc />} />
         </Routes>
       </div>
     </>
