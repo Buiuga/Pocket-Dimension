@@ -329,8 +329,87 @@ export const ARTIFACTS_DATA = [
     id: "art_10",
     name: "Creator's Favor",
     cost: 1000000,
-    description: "Gabriel waves at you from above!",
+    description: "The creator waves at you!",
     effect: "Cooldowns -10%, All Costs -10%",
     image: "✨",
+  },
+];
+
+// Checkpoints Data
+export const CHECKPOINTS_DATA = [
+  {
+    id: "cp_1",
+    threshold: 100,
+    image: "../../Public/checkpoints/checkpoint1.png",
+  },
+  {
+    id: "cp_2",
+    threshold: 500,
+    image: "../../Public/checkpoints/checkpoint2.png",
+  },
+  {
+    id: "cp_3",
+    threshold: 1000,
+    image: "../../Public/checkpoints/checkpoint3.png",
+  },
+  {
+    id: "cp_4",
+    threshold: 2500,
+    image: "../../Public/checkpoints/checkpoint4.png",
+  },
+  {
+    id: "cp_5",
+    threshold: 5000,
+    image: "../../Public/checkpoints/checkpoint5.png",
+  },
+  {
+    id: "cp_6",
+    threshold: 7500,
+    image: "../../Public/checkpoints/checkpoint6.png",
+  },
+  {
+    id: "cp_7",
+    threshold: 10000,
+    image: "../../Public/checkpoints/checkpoint7.png",
+  },
+  {
+    id: "cp_8",
+    threshold: 15000,
+    image: "../../Public/checkpoints/checkpoint8.png",
+  },
+  {
+    id: "cp_9",
+    threshold: 20000,
+    image: "../../Public/checkpoints/checkpoint9.png",
+  },
+  {
+    id: "cp_10",
+    threshold: 30000,
+    image: "../../Public/checkpoints/checkpoint10.png",
+  },
+  {
+    id: "cp_11",
+    threshold: 40000,
+    image: "../../Public/checkpoints/checkpoint11.png",
+  },
+  {
+    id: "cp_12",
+    threshold: 50000,
+    image: "../../Public/checkpoints/checkpoint12.png",
+  },
+  {
+    id: "cp_13",
+    threshold: 70000,
+    image: "../../Public/checkpoints/checkpoint13.png",
+  },
+  {
+    id: "cp_14",
+    threshold: 90000,
+    image: "../../Public/checkpoints/checkpoint14.png",
+  },
+  {
+    id: "cp_15",
+    threshold: 100000,
+    image: "../../Public/checkpoints/checkpoint15.png",
   },
 ];

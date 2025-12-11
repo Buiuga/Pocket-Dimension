@@ -3,13 +3,18 @@ import {
   ITEMS_DATA,
   AUTOMATION_DATA,
   ARTIFACTS_DATA,
+  CHECKPOINTS_DATA,
 } from "../data/DopamineData";
-
 export const useDopamineGame = () => {
-  // --- STATE ---
+  // ... (All your existing state definitions: dopamine, unlockedItems, etc.) ...
   const [dopamine, setDopamine] = useState(() => {
     const saved = localStorage.getItem("dopamine_currency");
-    return saved ? parseFloat(saved) : 0;
+    return saved && !isNaN(parseFloat(saved)) ? parseFloat(saved) : 0;
+  });
+
+  const [lifetimeDopamine, setLifetimeDopamine] = useState(() => {
+    const saved = localStorage.getItem("dopamine_lifetime");
+    return saved && !isNaN(parseFloat(saved)) ? parseFloat(saved) : 0;
   });
 
   const [unlockedItems, setUnlockedItems] = useState(() => {
@@ -27,6 +32,11 @@ export const useDopamineGame = () => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [unlockedCheckpoints, setUnlockedCheckpoints] = useState(() => {
+    const saved = localStorage.getItem("dopamine_checkpoints");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [cooldowns, setCooldowns] = useState(() => {
     const saved = localStorage.getItem("dopamine_cooldowns");
     if (!saved) return {};
@@ -41,7 +51,6 @@ export const useDopamineGame = () => {
 
   const [tick, setTick] = useState(() => Date.now());
 
-  // --- REFS ---
   const dopamineRef = useRef(dopamine);
   const cooldownsRef = useRef(cooldowns);
   const automatedRef = useRef(automatedItems);
@@ -54,16 +63,28 @@ export const useDopamineGame = () => {
     artifactsRef.current = ownedArtifacts;
   }, [dopamine, cooldowns, automatedItems, ownedArtifacts]);
 
-  // --- SAVE SYSTEM ---
   useEffect(() => {
     localStorage.setItem("dopamine_currency", dopamine);
+    localStorage.setItem("dopamine_lifetime", lifetimeDopamine);
     localStorage.setItem("dopamine_unlocked", JSON.stringify(unlockedItems));
     localStorage.setItem("dopamine_automated", JSON.stringify(automatedItems));
     localStorage.setItem("dopamine_cooldowns", JSON.stringify(cooldowns));
     localStorage.setItem("dopamine_artifacts", JSON.stringify(ownedArtifacts));
-  }, [dopamine, unlockedItems, automatedItems, cooldowns, ownedArtifacts]);
+    localStorage.setItem(
+      "dopamine_checkpoints",
+      JSON.stringify(unlockedCheckpoints)
+    );
+  }, [
+    dopamine,
+    lifetimeDopamine,
+    unlockedItems,
+    automatedItems,
+    cooldowns,
+    ownedArtifacts,
+    unlockedCheckpoints,
+  ]);
 
-  // --- CALCULATE BONUSES (The Magic Logic) ---
+  // --- CALCULATE BONUSES ---
   const bonuses = useMemo(() => {
     const owned = ownedArtifacts;
     let cdMult = 1.0;
@@ -72,36 +93,39 @@ export const useDopamineGame = () => {
     let artifactCostMult = 1.0;
     let passivePerSec = 0;
 
-    // Cooldown Reduction
-    if (owned.includes("art_1")) cdMult *= 0.95; // Potato
-    if (owned.includes("art_7")) cdMult *= 0.9; // Balou
-    if (owned.includes("art_10")) cdMult *= 0.9; // Creator
+    if (owned.includes("art_1")) cdMult *= 0.95;
+    if (owned.includes("art_7")) cdMult *= 0.9;
+    if (owned.includes("art_10")) cdMult *= 0.9;
 
-    // Manual Cost Reduction
-    if (owned.includes("art_2")) manualCostMult *= 0.95; // Ikea
-    if (owned.includes("art_5")) manualCostMult *= 0.9; // Peony
-    if (owned.includes("art_10")) manualCostMult *= 0.9; // Creator
+    if (owned.includes("art_2")) manualCostMult *= 0.95;
+    if (owned.includes("art_5")) manualCostMult *= 0.9;
+    if (owned.includes("art_10")) manualCostMult *= 0.9;
 
-    // Auto Cost Reduction
-    if (owned.includes("art_3")) autoCostMult *= 0.95; // Bolg
-    if (owned.includes("art_6")) autoCostMult *= 0.9; // Bellflower
-    if (owned.includes("art_10")) autoCostMult *= 0.9; // Creator
+    if (owned.includes("art_3")) autoCostMult *= 0.95;
+    if (owned.includes("art_6")) autoCostMult *= 0.9;
+    if (owned.includes("art_10")) autoCostMult *= 0.9;
 
-    // Artifact Cost Reduction
-    if (owned.includes("art_4")) artifactCostMult *= 0.85; // Ogrul (15% discount)
-    if (owned.includes("art_10")) artifactCostMult *= 0.9; // Creator (assumed 'All Costs' includes artifacts)
+    if (owned.includes("art_4")) artifactCostMult *= 0.85;
+    if (owned.includes("art_10")) artifactCostMult *= 0.9;
 
-    // Passive Generation
-    // Baghera & Doris Synergy
     const hasBaghera = owned.includes("art_8");
     const hasDoris = owned.includes("art_9");
 
     if (hasBaghera && hasDoris) {
-      passivePerSec += 300; // Both = 150 + 150
+      passivePerSec += 300;
     } else {
       if (hasBaghera) passivePerSec += 100;
       if (hasDoris) passivePerSec += 100;
     }
+
+    const cpCount = unlockedCheckpoints.length;
+    const cpDiscountMultiplier = 1 - cpCount * 0.01;
+
+    manualCostMult *= cpDiscountMultiplier;
+    autoCostMult *= cpDiscountMultiplier;
+    artifactCostMult *= cpDiscountMultiplier;
+    cdMult *= cpDiscountMultiplier;
+    passivePerSec += cpCount;
 
     return {
       cdMult,
@@ -110,7 +134,25 @@ export const useDopamineGame = () => {
       artifactCostMult,
       passivePerSec,
     };
-  }, [ownedArtifacts]);
+  }, [ownedArtifacts, unlockedCheckpoints]);
+
+  // --- NEW: CALCULATE TOTAL DPS (Dopamine Per Second) ---
+  const totalDPS = useMemo(() => {
+    let autoDPS = 0;
+
+    // Calculate DPS from automated items
+    ITEMS_DATA.forEach((item) => {
+      if (automatedItems.includes(item.id)) {
+        // Real Duration in Seconds = (Base Duration * Cooldown Multiplier) / 1000
+        const realDurationSec = (item.duration * bonuses.cdMult) / 1000;
+        // Points per second = Reward / Duration
+        autoDPS += item.reward / realDurationSec;
+      }
+    });
+
+    // Add pure passive income (Artifacts/Checkpoints)
+    return autoDPS + bonuses.passivePerSec;
+  }, [automatedItems, bonuses]);
 
   // --- LOOPS ---
   useEffect(() => {
@@ -133,13 +175,11 @@ export const useDopamineGame = () => {
       let newCooldowns = {};
       let hasUpdates = false;
 
-      // 1. Automation Items
       ITEMS_DATA.forEach((item) => {
         if (currentAutomated.includes(item.id)) {
           const readyTime = currentCooldowns[item.id] || 0;
           if (now >= readyTime) {
             dopamineGain += item.reward;
-            // APPLY COOLDOWN BONUS TO AUTOMATION TOO
             const duration = item.duration * bonuses.cdMult;
             newCooldowns[item.id] = now + duration;
             hasUpdates = true;
@@ -147,8 +187,6 @@ export const useDopamineGame = () => {
         }
       });
 
-      // 2. Artifact Passive Gain
-      // Divide by 10 because loop runs every 100ms
       if (bonuses.passivePerSec > 0) {
         dopamineGain += bonuses.passivePerSec / 10;
         hasUpdates = true;
@@ -156,25 +194,19 @@ export const useDopamineGame = () => {
 
       if (hasUpdates) {
         setDopamine((prev) => prev + dopamineGain);
+        setLifetimeDopamine((prev) => prev + dopamineGain);
         setCooldowns((prev) => ({ ...prev, ...newCooldowns }));
       }
     }, 100);
     return () => clearInterval(interval);
-  }, [bonuses]); // Re-create loop if bonuses change
+  }, [bonuses]);
 
   // --- ACTIONS ---
-
-  const getManualCost = (item) => {
-    return Math.floor(item.unlockCost * bonuses.manualCostMult);
-  };
-
-  const getAutoCost = (auto) => {
-    return Math.floor(auto.cost * bonuses.autoCostMult);
-  };
-
-  const getArtifactCost = (artifact) => {
-    return Math.floor(artifact.cost * bonuses.artifactCostMult);
-  };
+  const getManualCost = (item) =>
+    Math.floor(item.unlockCost * bonuses.manualCostMult);
+  const getAutoCost = (auto) => Math.floor(auto.cost * bonuses.autoCostMult);
+  const getArtifactCost = (artifact) =>
+    Math.floor(artifact.cost * bonuses.artifactCostMult);
 
   const handleItemClick = (item) => {
     const now = Date.now();
@@ -182,7 +214,7 @@ export const useDopamineGame = () => {
     if (now < readyTime) return;
 
     setDopamine((prev) => prev + item.reward);
-    // APPLY COOLDOWN BONUS
+    setLifetimeDopamine((prev) => prev + item.reward);
     const duration = item.duration * bonuses.cdMult;
     setCooldowns((prev) => ({ ...prev, [item.id]: now + duration }));
   };
@@ -211,14 +243,21 @@ export const useDopamineGame = () => {
     }
   };
 
+  const handleClaimCheckpoint = (checkpointId) => {
+    setUnlockedCheckpoints((prev) => [...prev, checkpointId]);
+  };
+
   return {
     dopamine,
+    lifetimeDopamine,
     unlockedItems,
     automatedItems,
     ownedArtifacts,
+    unlockedCheckpoints,
     cooldowns,
     tick,
     bonuses,
+    totalDPS, // <--- EXPORTED HERE
     getManualCost,
     getAutoCost,
     getArtifactCost,
@@ -226,5 +265,6 @@ export const useDopamineGame = () => {
     handleUnlock,
     handleBuyAutomation,
     handleBuyArtifact,
+    handleClaimCheckpoint,
   };
 };
