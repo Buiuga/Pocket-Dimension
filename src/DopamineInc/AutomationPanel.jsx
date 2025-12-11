@@ -2,6 +2,7 @@ import React from "react";
 import { AUTOMATION_DATA, ITEMS_DATA } from "../data/DopamineData";
 
 const formatNumber = (num) => {
+  if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
   if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
   if (num >= 1000) return (num / 1000).toFixed(1) + "k";
   return Math.floor(num);
@@ -34,7 +35,6 @@ const AutomationPanel = ({ game }) => {
         // 2. Calculate the specific cost for this item
         const currentCost = getAutoCost(auto);
 
-        // 3. NEW: Get the actual names of the target items
         const targetNames = auto.targets
           .map((tId) => ITEMS_DATA.find((i) => i.id === tId)?.name)
           .join(" & ");
@@ -64,7 +64,6 @@ const AutomationPanel = ({ game }) => {
                   targetsUnlocked ? "text-orange-200" : "text-gray-500"
                 } text-sm`}
               >
-                {/* Display the real names here */}
                 Automates: {targetNames}
               </p>
             </div>
@@ -76,7 +75,6 @@ const AutomationPanel = ({ game }) => {
             ) : targetsUnlocked ? (
               <button
                 onClick={() => handleBuyAutomation(auto)}
-                // 3. Use currentCost here
                 disabled={dopamine < currentCost}
                 className={`
                     px-6 py-3 rounded-lg font-bold text-sm transition-all shadow-lg
@@ -87,7 +85,6 @@ const AutomationPanel = ({ game }) => {
                     }
                 `}
               >
-                {/* 4. Display currentCost here */}
                 Buy {formatNumber(currentCost)} ⚡
               </button>
             ) : (

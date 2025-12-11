@@ -5,6 +5,7 @@ import {
   ARTIFACTS_DATA,
   CHECKPOINTS_DATA,
 } from "../data/DopamineData";
+
 export const useDopamineGame = () => {
   // ... (All your existing state definitions: dopamine, unlockedItems, etc.) ...
   const [dopamine, setDopamine] = useState(() => {
@@ -112,20 +113,22 @@ export const useDopamineGame = () => {
     const hasDoris = owned.includes("art_9");
 
     if (hasBaghera && hasDoris) {
-      passivePerSec += 300;
+      passivePerSec += 50000;
     } else {
-      if (hasBaghera) passivePerSec += 100;
-      if (hasDoris) passivePerSec += 100;
+      if (hasBaghera) passivePerSec += 10000;
+      if (hasDoris) passivePerSec += 10000;
     }
 
+    // CHECKPOINT BONUSES UPDATED HERE
     const cpCount = unlockedCheckpoints.length;
-    const cpDiscountMultiplier = 1 - cpCount * 0.01;
+    const cpDiscountMultiplier = 1 - cpCount * 0.03;
 
     manualCostMult *= cpDiscountMultiplier;
     autoCostMult *= cpDiscountMultiplier;
     artifactCostMult *= cpDiscountMultiplier;
     cdMult *= cpDiscountMultiplier;
-    passivePerSec += cpCount;
+
+    passivePerSec += cpCount * 100;
 
     return {
       cdMult,
@@ -136,7 +139,7 @@ export const useDopamineGame = () => {
     };
   }, [ownedArtifacts, unlockedCheckpoints]);
 
-  // --- NEW: CALCULATE TOTAL DPS (Dopamine Per Second) ---
+  //CALCULATE TOTAL DPS (Dopamine Per Second)
   const totalDPS = useMemo(() => {
     let autoDPS = 0;
 
@@ -257,7 +260,7 @@ export const useDopamineGame = () => {
     cooldowns,
     tick,
     bonuses,
-    totalDPS, // <--- EXPORTED HERE
+    totalDPS,
     getManualCost,
     getAutoCost,
     getArtifactCost,

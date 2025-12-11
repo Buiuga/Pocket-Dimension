@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CHECKPOINTS_DATA } from "../data/DopamineData";
 
 const formatNumber = (num) => {
+  if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
   if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
   if (num >= 1000) return (num / 1000).toFixed(1) + "k";
   return Math.floor(num);
@@ -11,20 +12,18 @@ const CollectionPanel = ({ game }) => {
   const { lifetimeDopamine, unlockedCheckpoints, handleClaimCheckpoint } = game;
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-  // Calculate current bonuses based on count
   const count = unlockedCheckpoints.length;
   const totalCheckpoints = CHECKPOINTS_DATA.length;
 
   return (
     <>
-      {/* 1. NEW: BUFFS INFO CARD */}
-      <div className="w-full max-w-5xl bg-black/40 border border-emerald-500/30 rounded-2xl p-6 mb-8 text-center backdrop-blur-sm shadow-xl">
+      {/* 1. BUFFS INFO CARD */}
+      <div className="w-full max-w-5xl bg-black/20 border border-emerald-500/30 rounded-2xl p-6 mb-8 text-center backdrop-blur-sm shadow-xl">
         <h3 className="text-emerald-400 font-bold text-lg uppercase tracking-widest mb-4">
-          Memory Resonance
+          Collection Bonuses
         </h3>
 
         <div className="flex flex-wrap justify-center gap-3 md:gap-6 text-sm md:text-base">
-          {/* Counter */}
           <div className="px-4 py-2 bg-emerald-900/30 rounded-lg border border-emerald-500/20 text-emerald-100 flex flex-col md:flex-row gap-2 items-center">
             <span>📸 Memories:</span>
             <span className="text-white font-bold text-lg">
@@ -32,30 +31,29 @@ const CollectionPanel = ({ game }) => {
             </span>
           </div>
 
-          {/* Cost Buff */}
           <div className="px-4 py-2 bg-orange-900/30 rounded-lg border border-orange-500/20 text-orange-100 flex flex-col md:flex-row gap-2 items-center">
             <span>📉 All Costs:</span>
-            <span className="text-white font-bold text-lg">-{count}%</span>
+            <span className="text-white font-bold text-lg">-{count * 3}%</span>
           </div>
 
-          {/* Speed Buff */}
           <div className="px-4 py-2 bg-blue-900/30 rounded-lg border border-blue-500/20 text-blue-100 flex flex-col md:flex-row gap-2 items-center">
             <span>⚡ Cooldowns:</span>
-            <span className="text-white font-bold text-lg">-{count}%</span>
+            <span className="text-white font-bold text-lg">-{count * 3}%</span>
           </div>
 
-          {/* Passive Buff */}
           <div className="px-4 py-2 bg-purple-900/30 rounded-lg border border-purple-500/20 text-purple-100 flex flex-col md:flex-row gap-2 items-center">
             <span>💸 Passive:</span>
-            <span className="text-white font-bold text-lg">+{count}/s</span>
+            <span className="text-white font-bold text-lg">
+              +{count * 100}/s
+            </span>
           </div>
         </div>
 
         <p className="text-gray-400 text-xs mt-4 italic max-w-2xl mx-auto">
-          Every memory you unlock strengthens your bond with the timeline.
+          Every memory you unlock strengthens your bond with the creator.
           <span className="text-emerald-500 font-bold">
             {" "}
-            Each photo grants 1% bonus stats
+            Each photo grants 3% bonus stats
           </span>{" "}
           to help you reach the next one.
         </p>
@@ -67,7 +65,6 @@ const CollectionPanel = ({ game }) => {
           const isUnlocked = unlockedCheckpoints.includes(cp.id);
           const canUnlock = !isUnlocked && lifetimeDopamine >= cp.threshold;
 
-          // LOCKED STATE
           if (!isUnlocked && !canUnlock) {
             return (
               <div
@@ -83,7 +80,6 @@ const CollectionPanel = ({ game }) => {
             );
           }
 
-          // UNLOCKABLE STATE
           if (canUnlock) {
             return (
               <button
@@ -102,7 +98,6 @@ const CollectionPanel = ({ game }) => {
             );
           }
 
-          // UNLOCKED STATE
           return (
             <div
               key={cp.id}
@@ -130,13 +125,19 @@ const CollectionPanel = ({ game }) => {
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4"
           onClick={() => setSelectedPhoto(null)}
         >
-          <div className="relative max-w-4xl max-h-full flex flex-col items-center">
+          <div className="relative max-w-4xl max-h-full flex flex-col items-center justify-center">
+            <h2 className="text-white text-xl md:text-2xl font-bold mb-4 bg-black/60 px-6 py-2 rounded-full backdrop-blur-md text-center shadow-lg border border-white/10">
+              {selectedPhoto.title ||
+                `Memory #${selectedPhoto.id.split("_")[1]}`}
+            </h2>
+
             <img
               src={selectedPhoto.image}
               alt="Full Memory"
-              className="max-w-full max-h-[80vh] rounded-lg shadow-2xl border-2 border-orange-500/20"
+              className="max-w-full max-h-[75vh] rounded-lg shadow-2xl border-2 border-orange-500/20"
             />
-            <p className="text-center text-white mt-4 text-sm bg-black/50 px-4 py-2 rounded-full">
+
+            <p className="text-center text-white mt-4 text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10">
               Unlocked at {formatNumber(selectedPhoto.threshold)} Dopamine
             </p>
           </div>

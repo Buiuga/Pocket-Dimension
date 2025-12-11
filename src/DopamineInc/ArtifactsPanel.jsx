@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { ARTIFACTS_DATA } from "../data/DopamineData";
 
 const formatNumber = (num) => {
+  if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
   if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
   if (num >= 1000) return (num / 1000).toFixed(1) + "k";
   return Math.floor(num);
@@ -28,7 +29,6 @@ const ArtifactsPanel = ({ game }) => {
     let artMult = 1.0;
     let passive = 0;
 
-    // We replicate the logic just for display purposes here
     // Cooldowns
     if (ownedArtifacts.includes("art_1")) cdMult *= 0.95; // Potato
     if (ownedArtifacts.includes("art_7")) cdMult *= 0.9; // Balou
@@ -51,10 +51,12 @@ const ArtifactsPanel = ({ game }) => {
     // Passive
     const hasBaghera = ownedArtifacts.includes("art_8");
     const hasDoris = ownedArtifacts.includes("art_9");
-    if (hasBaghera && hasDoris) passive += 300;
-    else {
-      if (hasBaghera) passive += 100;
-      if (hasDoris) passive += 100;
+
+    if (hasBaghera && hasDoris) {
+      passive += 50000;
+    } else {
+      if (hasBaghera) passive += 10000;
+      if (hasDoris) passive += 10000;
     }
 
     return { cdMult, manualMult, autoMult, artMult, passive };
@@ -63,13 +65,12 @@ const ArtifactsPanel = ({ game }) => {
   return (
     <>
       {/* 1. ARTIFACT-SPECIFIC STATS CARD */}
-      <div className="w-full max-w-4xl bg-black/40 border border-purple-500/30 rounded-2xl p-6 mb-8 text-center backdrop-blur-sm shadow-xl">
+      <div className="w-full max-w-4xl bg-black/20 border border-purple-500/30 rounded-2xl p-6 mb-8 text-center backdrop-blur-sm shadow-xl">
         <h3 className="text-purple-300 font-bold text-lg uppercase tracking-widest mb-4">
-          Relic Bonuses
+          Artifacts Bonuses
         </h3>
 
         <div className="flex flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm">
-          {/* Artifact Counter */}
           <div className="px-3 py-2 bg-purple-900/30 rounded-lg border border-purple-500/20 text-purple-100">
             <div className="text-gray-400 text-[10px] uppercase">Collected</div>
             <div className="font-bold text-lg">
@@ -77,7 +78,6 @@ const ArtifactsPanel = ({ game }) => {
             </div>
           </div>
 
-          {/* Manual Discount */}
           <div className="px-3 py-2 bg-orange-900/30 rounded-lg border border-orange-500/20 text-orange-100">
             <div className="text-gray-400 text-[10px] uppercase">
               Manual Cost
@@ -87,7 +87,6 @@ const ArtifactsPanel = ({ game }) => {
             </div>
           </div>
 
-          {/* Auto Discount */}
           <div className="px-3 py-2 bg-amber-900/30 rounded-lg border border-amber-500/20 text-amber-100">
             <div className="text-gray-400 text-[10px] uppercase">Auto Cost</div>
             <div className="font-bold text-lg">
@@ -95,17 +94,15 @@ const ArtifactsPanel = ({ game }) => {
             </div>
           </div>
 
-          {/* Artifact Discount */}
           <div className="px-3 py-2 bg-pink-900/30 rounded-lg border border-pink-500/20 text-pink-100">
             <div className="text-gray-400 text-[10px] uppercase">
-              Relic Cost
+              Artifact Cost
             </div>
             <div className="font-bold text-lg">
               -{getPercent(artifactStats.artMult)}
             </div>
           </div>
 
-          {/* Cooldown Speed */}
           <div className="px-3 py-2 bg-blue-900/30 rounded-lg border border-blue-500/20 text-blue-100">
             <div className="text-gray-400 text-[10px] uppercase">Cooldowns</div>
             <div className="font-bold text-lg">
@@ -113,10 +110,11 @@ const ArtifactsPanel = ({ game }) => {
             </div>
           </div>
 
-          {/* Passive Income */}
           <div className="px-3 py-2 bg-emerald-900/30 rounded-lg border border-emerald-500/20 text-emerald-100">
             <div className="text-gray-400 text-[10px] uppercase">Passive</div>
-            <div className="font-bold text-lg">+{artifactStats.passive}/s</div>
+            <div className="font-bold text-lg">
+              +{formatNumber(artifactStats.passive)}/s
+            </div>
           </div>
         </div>
       </div>
