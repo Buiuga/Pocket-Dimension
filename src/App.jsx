@@ -6,7 +6,7 @@ import BorrowedWisdom from "./BorrowedWisdom";
 import ResetBreath from "./ResetBreath";
 import BubbleWrap from "./BubbleWrap";
 import { Routes, Route } from "react-router-dom";
-import StarrySky from "./StarrySky";
+import StarrySky from "./StarrySky/StarrySky";
 import DopamineInc from "./DopamineInc/DopamineInc";
 function App() {
   return (

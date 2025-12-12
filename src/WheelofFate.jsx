@@ -126,7 +126,7 @@ const WheelofFate = () => {
           <p className="text-teal-200 text-sm md:text-base leading-relaxed">
             Spin the wheel! <br />
             <span className="text-xs opacity-70 italic mt-1 block text-emerald-300">
-              (Don't use it for very important, life decisions. Ask me instead,
+              (Don't use it for very important life decisions. Ask me instead,
               so we can decide together)
             </span>
           </p>
@@ -189,7 +189,6 @@ const WheelofFate = () => {
           {/* TEXT RENDERING LOGIC */}
           {options.map((opt, i) => {
             const sliceSize = 360 / options.length;
-            // We want the text in the MIDDLE of the slice
             const rotateAmount = i * sliceSize + sliceSize / 2;
 
             return (
