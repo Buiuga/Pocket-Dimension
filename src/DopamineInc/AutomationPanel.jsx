@@ -28,9 +28,9 @@ const AutomationPanel = ({ game }) => {
           automatedItems.includes(tId)
         );
 
-        const requiredItemName =
-          ITEMS_DATA.find((i) => i.id === auto.targets[0])?.name ||
-          "Unknown Item";
+        const requiredItemNames = auto.targets
+          .map((tId) => ITEMS_DATA.find((i) => i.id === tId)?.name)
+          .join(" & ");
 
         // 2. Calculate the specific cost for this item
         const currentCost = getAutoCost(auto);
@@ -89,7 +89,7 @@ const AutomationPanel = ({ game }) => {
               </button>
             ) : (
               <div className="px-4 py-2 rounded-lg font-bold text-xs bg-gray-800 text-gray-500 border border-gray-700 text-center">
-                🔒 Requires <br /> {requiredItemName}
+                🔒 Requires <br /> {requiredItemNames}
               </div>
             )}
           </div>

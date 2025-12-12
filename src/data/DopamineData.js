@@ -223,7 +223,7 @@ export const AUTOMATION_DATA = [
   {
     id: "auto_12",
     name: "Donut Shop",
-    cost: 40000000, // 40M (Automates TWO expensive items)
+    cost: 20000000, // 25M (Automates TWO expensive items)
     targets: ["item_12", "item_13"],
   },
   {
