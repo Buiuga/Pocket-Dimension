@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const POP_SOUNDS = [
-  "../Public/pop1.mp3",
-  "../Public/pop2.mp3",
-  "../Public/pop3.mp3",
+  "/Pocket-Dimension/pop1.mp3",
+  "/Pocket-Dimension/pop2.mp3",
+  "/Pocket-Dimension/pop3.mp3",
 ];
 
 const GRID_SIZE = 48;

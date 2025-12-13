@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const ALARM_SOUND = "../Public/Alarm.mp3";
+// FIXED PATH: Points to the root of your GitHub Pages site
+const ALARM_SOUND = "/Pocket-Dimension/Alarm.mp3";
 
 const Pomodoro = () => {
   const INITIAL_TIME = 25 * 60;
@@ -53,7 +54,7 @@ const Pomodoro = () => {
         setIsRunning(false);
         clearInterval(interval);
 
-        // PLAY SOUND (This remains here, so it only plays at the end)
+        // PLAY SOUND
         const audio = new Audio(ALARM_SOUND);
         audio.volume = 0.3;
         audio.play().catch((e) => console.log("Audio play failed:", e));

@@ -14,7 +14,7 @@ const WHEEL_COLORS = [
 ];
 
 // Sound effect for the wheel
-const SPIN_SOUND = "../Public/WheelSpin.mp3";
+const SPIN_SOUND = "/Pocket-Dimension/WheelSpin.mp3";
 
 const WheelofFate = () => {
   const navigate = useNavigate();
