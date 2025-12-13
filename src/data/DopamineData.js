@@ -223,7 +223,7 @@ export const AUTOMATION_DATA = [
   {
     id: "auto_12",
     name: "Donut Shop",
-    cost: 20000000, // 25M (Automates TWO expensive items)
+    cost: 35000000, // 35M (Automates TWO expensive items)
     targets: ["item_12", "item_13"],
   },
   {
@@ -368,32 +368,32 @@ export const ARTIFACTS_DATA = [
   },
 ];
 
-// src/data/CheckpointsData.js (or wherever you store this)
+//CheckpointsData.js
 
 export const CHECKPOINTS_DATA = [
   // --- EARLY GAME (The Hook) ---
   {
     id: "cp_1",
     threshold: 1000,
-    image: "../../Public/checkpoints/checkpoint1.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint1.png",
     title: "Terraria",
   },
   {
     id: "cp_2",
     threshold: 10000,
-    image: "../../Public/checkpoints/checkpoint2.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint2.png",
     title: "Movie Night!",
   },
   {
     id: "cp_3",
     threshold: 50000,
-    image: "../../Public/checkpoints/checkpoint3.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint3.png",
     title: "Portal Guns Pew Pew",
   },
   {
     id: "cp_4",
     threshold: 150000,
-    image: "../../Public/checkpoints/checkpoint4.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint4.png",
     title: "Paparazzi",
   },
 
@@ -401,31 +401,31 @@ export const CHECKPOINTS_DATA = [
   {
     id: "cp_5",
     threshold: 500000,
-    image: "../../Public/checkpoints/checkpoint5.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint5.png",
     title: "She's the catch",
   },
   {
     id: "cp_6",
     threshold: 1500000,
-    image: "../../Public/checkpoints/checkpoint6.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint6.png",
     title: "Winged Goth GF",
   },
   {
     id: "cp_7",
     threshold: 5000000,
-    image: "../../Public/checkpoints/checkpoint7.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint7.png",
     title: "Fast and Furious",
   },
   {
     id: "cp_8",
     threshold: 15000000,
-    image: "../../Public/checkpoints/checkpoint8.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint8.png",
     title: "Help i am being captive",
   },
   {
     id: "cp_9",
     threshold: 35000000,
-    image: "../../Public/checkpoints/checkpoint9.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint9.png",
     title: "Free photos with Harambe",
   },
 
@@ -433,37 +433,37 @@ export const CHECKPOINTS_DATA = [
   {
     id: "cp_10",
     threshold: 75000000,
-    image: "../../Public/checkpoints/checkpoint10.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint10.png",
     title: "Struggling..",
   },
   {
     id: "cp_11",
     threshold: 150000000,
-    image: "../../Public/checkpoints/checkpoint11.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint11.png",
     title: "Heeelp im falling",
   },
   {
     id: "cp_12",
     threshold: 300000000,
-    image: "../../Public/checkpoints/checkpoint12.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint12.png",
     title: "First time matching outfits!",
   },
   {
     id: "cp_13",
     threshold: 600000000,
-    image: "../../Public/checkpoints/checkpoint13.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint13.png",
     title: "Just Chillin'",
   },
   {
     id: "cp_14",
     threshold: 1200000000,
-    image: "../../Public/checkpoints/checkpoint14.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint14.png",
     title: "Kinda cute",
   },
   {
     id: "cp_15",
     threshold: 2000000000,
-    image: "../../Public/checkpoints/checkpoint15.png",
+    image: "../../Public/DopamineInc/checkpoints/checkpoint15.png",
     title: "Best moment",
   },
 ];

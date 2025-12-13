@@ -6,8 +6,12 @@ import {
   CHECKPOINTS_DATA,
 } from "../data/DopamineData";
 
+// --- SOUND CONSTANTS ---
+const SUCCESS_SOUND = "../../Public/DopamineInc/sounds/cha-chingunlock.mp3";
+const SPARKLE_SOUND = "../../Public/DopamineInc/sounds/unlockCollection.mp3";
+
 export const useDopamineGame = () => {
-  // ... (All your existing state definitions: dopamine, unlockedItems, etc.) ...
+  // ... (All existing state definitions: dopamine, unlockedItems, etc.) ...
   const [dopamine, setDopamine] = useState(() => {
     const saved = localStorage.getItem("dopamine_currency");
     return saved && !isNaN(parseFloat(saved)) ? parseFloat(saved) : 0;
@@ -57,6 +61,28 @@ export const useDopamineGame = () => {
   const automatedRef = useRef(automatedItems);
   const artifactsRef = useRef(ownedArtifacts);
 
+  // --- SOUND HELPER ---
+  const playSound = (type) => {
+    try {
+      let src;
+      let volume = 0.3;
+
+      if (type === "success") {
+        src = SUCCESS_SOUND;
+      } else if (type === "collection") {
+        src = SPARKLE_SOUND;
+        volume = 0.3;
+      }
+
+      if (src) {
+        const audio = new Audio(src);
+        audio.volume = volume;
+        audio.play().catch(() => {});
+      }
+    } catch (e) {
+      console.error("Audio error", e);
+    }
+  };
   useEffect(() => {
     dopamineRef.current = dopamine;
     cooldownsRef.current = cooldowns;
@@ -119,7 +145,7 @@ export const useDopamineGame = () => {
       if (hasDoris) passivePerSec += 10000;
     }
 
-    // CHECKPOINT BONUSES UPDATED HERE
+    // CHECKPOINT BONUSES
     const cpCount = unlockedCheckpoints.length;
     const cpDiscountMultiplier = 1 - cpCount * 0.03;
 
@@ -139,21 +165,17 @@ export const useDopamineGame = () => {
     };
   }, [ownedArtifacts, unlockedCheckpoints]);
 
-  //CALCULATE TOTAL DPS (Dopamine Per Second)
+  //CALCULATE TOTAL DPS
   const totalDPS = useMemo(() => {
     let autoDPS = 0;
 
-    // Calculate DPS from automated items
     ITEMS_DATA.forEach((item) => {
       if (automatedItems.includes(item.id)) {
-        // Real Duration in Seconds = (Base Duration * Cooldown Multiplier) / 1000
         const realDurationSec = (item.duration * bonuses.cdMult) / 1000;
-        // Points per second = Reward / Duration
         autoDPS += item.reward / realDurationSec;
       }
     });
 
-    // Add pure passive income (Artifacts/Checkpoints)
     return autoDPS + bonuses.passivePerSec;
   }, [automatedItems, bonuses]);
 
@@ -227,6 +249,7 @@ export const useDopamineGame = () => {
     if (dopamine >= cost) {
       setDopamine((prev) => prev - cost);
       setUnlockedItems((prev) => [...prev, item.id]);
+      playSound("success");
     }
   };
 
@@ -235,6 +258,7 @@ export const useDopamineGame = () => {
     if (dopamine >= cost) {
       setDopamine((prev) => prev - cost);
       setAutomatedItems((prev) => [...prev, ...autoUpgrade.targets]);
+      playSound("success");
     }
   };
 
@@ -243,13 +267,14 @@ export const useDopamineGame = () => {
     if (dopamine >= cost) {
       setDopamine((prev) => prev - cost);
       setOwnedArtifacts((prev) => [...prev, artifact.id]);
+      playSound("success");
     }
   };
 
   const handleClaimCheckpoint = (checkpointId) => {
     setUnlockedCheckpoints((prev) => [...prev, checkpointId]);
+    playSound("collection");
   };
-
   return {
     dopamine,
     lifetimeDopamine,
