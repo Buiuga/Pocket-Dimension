@@ -7,8 +7,10 @@ import {
 } from "../data/DopamineData";
 
 // --- SOUND CONSTANTS ---
-const SUCCESS_SOUND = "../../Public/DopamineInc/sounds/cha-chingunlock.mp3";
-const SPARKLE_SOUND = "../../Public/DopamineInc/sounds/unlockCollection.mp3";
+const SUCCESS_SOUND =
+  "/Pocket-Dimension/DopamineInc/sounds/cha-chingunlock.mp3";
+const SPARKLE_SOUND =
+  "/Pocket-Dimension/DopamineInc/sounds/unlockCollection.mp3";
 
 export const useDopamineGame = () => {
   // ... (All existing state definitions: dopamine, unlockedItems, etc.) ...
