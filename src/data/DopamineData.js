@@ -163,7 +163,7 @@ export const ITEMS_DATA = [
     name: "Writing Realms",
     unlockCost: 2500000000, // 2.5 Billion
     reward: 35000000, // 35M
-    duration: 5000,
+    duration: 7500,
   },
 ];
 
@@ -253,13 +253,13 @@ export const AUTOMATION_DATA = [
   {
     id: "auto_17",
     name: "Boba Shop",
-    cost: 1500000000, // 1.5 Billion
+    cost: 1200000000, // 1.2 Billion
     targets: ["item_18"],
   },
   {
     id: "auto_18",
     name: "Nordic Macaroon Atelier",
-    cost: 3000000000, // 3 Billion
+    cost: 2500000000, // 2.5 Billion
     targets: ["item_19"],
   },
   {
@@ -271,13 +271,13 @@ export const AUTOMATION_DATA = [
   {
     id: "auto_20",
     name: "Cake Shop",
-    cost: 10000000000, // 10 Billion
+    cost: 12500000000, // 12.5 Billion
     targets: ["item_21"],
   },
   {
     id: "auto_21",
     name: "Writers & Editors",
-    cost: 25000000000, // 25 Billion
+    cost: 20000000000, // 20 Billion
     targets: ["item_22"],
   },
 ];
