@@ -8,6 +8,7 @@ import BubbleWrap from "./BubbleWrap";
 import { Routes, Route } from "react-router-dom";
 import StarrySky from "./StarrySky/StarrySky";
 import DopamineInc from "./DopamineInc/DopamineInc";
+import GrowthSpot from "./GrowthSpot";
 function App() {
   return (
     <>
@@ -22,6 +23,8 @@ function App() {
           <Route path="bubbles" element={<BubbleWrap />} />
           <Route path="stars" element={<StarrySky />} />
           <Route path="dopamineInc" element={<DopamineInc />} />
+
+          <Route path="growth" element={<GrowthSpot />} />
         </Routes>
       </div>
     </>
