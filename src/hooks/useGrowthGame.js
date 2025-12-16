@@ -121,7 +121,9 @@ export const useGrowthGame = () => {
       .reverse()
       .find((s) => gameState.growthCount >= s.minDay);
 
-    return stage ? stage.image : "🌱";
+    // FIXED: Return stage image OR the first stage (seed) if something goes wrong.
+    // No more emojis!
+    return stage ? stage.image : currentTreeData.stages[0].image;
   };
 
   return {

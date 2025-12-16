@@ -8,11 +8,10 @@ export const TREES_DATA = [
     unlockCount: 0, // Available immediately
     daysToGrow: 14, // Needs 14 waterings to finish
     stages: [
-      { minDay: 0, image: "🌱" }, // Seed
-      { minDay: 3, image: "🌿" }, // Sprout
-      { minDay: 7, image: "🪴" }, // Sapling
-      { minDay: 11, image: "🌳" }, // Young Tree
-      { minDay: 14, image: "🌲" }, // Mature Tree (Final)
+      { minDay: 0, image: "/Pocket-Dimension/GrowthSpot/SmallSprout.png" }, // Small Sprout
+      { minDay: 4, image: "/Pocket-Dimension/GrowthSpot/BigSprout.png" }, // Sprout
+      { minDay: 8, image: "/Pocket-Dimension/GrowthSpot/SmallTree.png" }, // Sapling
+      { minDay: 13, image: "/Pocket-Dimension/GrowthSpot/BigTree.png" }, // Young Tree
     ],
   },
   {

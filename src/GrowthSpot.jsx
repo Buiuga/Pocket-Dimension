@@ -19,7 +19,54 @@ const GrowthSpot = () => {
     harvestTree,
   } = useGrowthGame();
 
-  const [activeModal, setActiveModal] = useState(null); // 'menu' (seeds) or 'forest' (collection)
+  const [activeModal, setActiveModal] = useState(null);
+
+  // --- STYLING LOGIC ---
+  const getStageIndex = () => {
+    if (!currentTreeData) return 0;
+    let index = 0;
+    currentTreeData.stages.forEach((stage, i) => {
+      if (gameState.growthCount >= stage.minDay) index = i;
+    });
+    return index;
+  };
+
+  const stageIndex = getStageIndex();
+
+  // 1. DYNAMIC CONTAINER PADDING (The "Floor" Height)
+  // Stage 0 (Seed) = 23 units (5.75rem)
+  // Others = 26 units (6.5rem)
+  const containerPadding = stageIndex === 0 ? "pb-[5.75rem]" : "pb-[6.5rem]";
+
+  // 2. TREE SIZE & MARGINS
+  const getTreeStyles = (index) => {
+    switch (index) {
+      case 0: // Stage 1 (Seed)
+        return {
+          margin: "mb-[25px]",
+          size: "w-32 h-32 md:w-40 md:h-40",
+        };
+      case 1: // Stage 2 (Sprout)
+        return {
+          margin: "mb-[30px]",
+          size: "w-34 h-34 md:w-48 md:h-48",
+        };
+      case 2: // Stage 3 (Small Tree)
+        return {
+          margin: "mb-[30px]",
+          size: "w-48 h-48 md:w-72 md:h-72",
+        };
+      case 3: // Stage 4 (Big Tree)
+        return {
+          margin: "mb-[30px]",
+          size: "w-64 h-64 md:w-96 md:h-96",
+        };
+      default:
+        return { margin: "mb-4", size: "w-64 h-64 md:w-96 md:h-96" };
+    }
+  };
+
+  const treeStyle = getTreeStyles(stageIndex);
 
   // --- HANDLERS ---
   const handleMainAction = () => {
@@ -47,7 +94,7 @@ const GrowthSpot = () => {
         ← Back
       </button>
 
-      {/* NEW: Forest Collection Button (Top Right) */}
+      {/* NEW: Forest Collection Button */}
       <button
         onClick={() => setActiveModal("forest")}
         className="absolute top-6 right-6 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white px-4 py-2 rounded-full font-bold text-sm transition-all z-20 shadow-lg flex items-center gap-2"
@@ -83,10 +130,11 @@ const GrowthSpot = () => {
         </motion.div>
       </div>
 
-      {/* THE SCENE (Tree & Ground) */}
-      {/* FIXED: Reduced pb-52 to pb-40 to bring tree closer to grass */}
-      <div className="flex-1 w-full flex flex-col justify-end items-center relative pb-40">
-        {/* The Tree Visual */}
+      {/* THE SCENE */}
+      {/* FIXED: Applied dynamic containerPadding here (pb-23 or pb-26 equivalent) */}
+      <div
+        className={`flex-1 w-full flex flex-col justify-end items-center relative ${containerPadding} transition-all duration-500`}
+      >
         <AnimatePresence mode="wait">
           {currentTreeData ? (
             <motion.div
@@ -95,10 +143,14 @@ const GrowthSpot = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 1.2, opacity: 0 }}
               transition={{ type: "spring", bounce: 0.5 }}
-              // Adjusted margin to sit perfectly on grass
-              className="text-9xl md:text-[12rem] filter drop-shadow-2xl z-10 translate-y-4"
+              // Applied your specific margins
+              className={`z-10 relative ${treeStyle.margin}`}
             >
-              {getCurrentStageImage()}
+              <img
+                src={getCurrentStageImage()}
+                alt="Tree Stage"
+                className={`${treeStyle.size} object-contain filter drop-shadow-2xl transition-all duration-500`}
+              />
             </motion.div>
           ) : (
             <div className="text-white/50 text-sm mb-10 font-bold tracking-widest uppercase z-10">
@@ -154,11 +206,10 @@ const GrowthSpot = () => {
         )}
       </div>
 
-      {/* MODALS (Menu & Forest) */}
+      {/* MODALS */}
       <AnimatePresence>
         {activeModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -167,7 +218,7 @@ const GrowthSpot = () => {
               onClick={() => setActiveModal(null)}
             />
 
-            {/* 1. SEED SELECTION MODAL */}
+            {/* SEED SELECTION MODAL */}
             {activeModal === "menu" && (
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -198,10 +249,16 @@ const GrowthSpot = () => {
                               }
                           `}
                       >
-                        <div className="text-3xl bg-white p-2 rounded-full shadow-sm">
-                          {isUnlocked
-                            ? tree.stages[tree.stages.length - 1].image
-                            : "🔒"}
+                        <div className="bg-white p-2 rounded-full shadow-sm w-12 h-12 flex items-center justify-center overflow-hidden shrink-0">
+                          {isUnlocked ? (
+                            <img
+                              src={tree.stages[tree.stages.length - 1].image}
+                              alt={tree.name}
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-2xl">🔒</span>
+                          )}
                         </div>
                         <div>
                           <h3 className="font-bold text-gray-800">
@@ -212,7 +269,6 @@ const GrowthSpot = () => {
                               {tree.description}
                             </p>
                           ) : (
-                            // FIXED: Shows progress (e.g., 1/3)
                             <p className="text-sm text-red-400 font-bold">
                               Requires {tree.unlockCount} trees (
                               {gameState.totalTreesGrown}/{tree.unlockCount})
@@ -233,7 +289,7 @@ const GrowthSpot = () => {
               </motion.div>
             )}
 
-            {/* 2. MY FOREST MODAL */}
+            {/* MY FOREST MODAL */}
             {activeModal === "forest" && (
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -257,7 +313,6 @@ const GrowthSpot = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-5 gap-2 justify-items-center max-h-60 overflow-y-auto p-2 bg-emerald-50 rounded-xl border border-emerald-100">
-                    {/* Render a tree emoji for every tree grown */}
                     {Array.from({ length: gameState.totalTreesGrown }).map(
                       (_, i) => (
                         <motion.div
