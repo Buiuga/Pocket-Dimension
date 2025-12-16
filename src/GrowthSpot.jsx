@@ -32,35 +32,18 @@ const GrowthSpot = () => {
   };
 
   const stageIndex = getStageIndex();
-
-  // 1. DYNAMIC CONTAINER PADDING (The "Floor" Height)
-  // Stage 0 (Seed) = 23 units (5.75rem)
-  // Others = 26 units (6.5rem)
   const containerPadding = stageIndex === 0 ? "pb-[5.75rem]" : "pb-[6.5rem]";
 
-  // 2. TREE SIZE & MARGINS
   const getTreeStyles = (index) => {
     switch (index) {
-      case 0: // Stage 1 (Seed)
-        return {
-          margin: "mb-[25px]",
-          size: "w-32 h-32 md:w-40 md:h-40",
-        };
-      case 1: // Stage 2 (Sprout)
-        return {
-          margin: "mb-[30px]",
-          size: "w-34 h-34 md:w-48 md:h-48",
-        };
-      case 2: // Stage 3 (Small Tree)
-        return {
-          margin: "mb-[30px]",
-          size: "w-48 h-48 md:w-72 md:h-72",
-        };
-      case 3: // Stage 4 (Big Tree)
-        return {
-          margin: "mb-[30px]",
-          size: "w-64 h-64 md:w-96 md:h-96",
-        };
+      case 0:
+        return { margin: "mb-[25px]", size: "w-32 h-32 md:w-40 md:h-40" };
+      case 1:
+        return { margin: "mb-[30px]", size: "w-34 h-34 md:w-48 md:h-48" };
+      case 2:
+        return { margin: "mb-[30px]", size: "w-48 h-48 md:w-72 md:h-72" };
+      case 3:
+        return { margin: "mb-[30px]", size: "w-64 h-64 md:w-96 md:h-96" };
       default:
         return { margin: "mb-4", size: "w-64 h-64 md:w-96 md:h-96" };
     }
@@ -94,14 +77,15 @@ const GrowthSpot = () => {
         ← Back
       </button>
 
-      {/* NEW: Forest Collection Button */}
+      {/* Forest Collection Button */}
       <button
         onClick={() => setActiveModal("forest")}
         className="absolute top-6 right-6 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white px-4 py-2 rounded-full font-bold text-sm transition-all z-20 shadow-lg flex items-center gap-2"
       >
         🌲 My Forest
+        {/* Shows count based on array length */}
         <span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-full">
-          {gameState.totalTreesGrown}
+          {gameState.grownTrees.length}
         </span>
       </button>
 
@@ -113,7 +97,7 @@ const GrowthSpot = () => {
           className="bg-white/20 backdrop-blur-md border border-white/40 p-6 rounded-2xl shadow-xl max-w-md mx-auto"
         >
           <h1 className="text-3xl font-bold text-white drop-shadow-md mb-2">
-            There You Grow
+            Growing Together
           </h1>
           <div className="text-sky-100 font-medium text-sm">
             {currentTreeData ? (
@@ -124,14 +108,13 @@ const GrowthSpot = () => {
                 </span>
               </div>
             ) : (
-              "You are not the only one growing."
+              "Beautiful things take time and care to bloom.."
             )}
           </div>
         </motion.div>
       </div>
 
       {/* THE SCENE */}
-      {/* FIXED: Applied dynamic containerPadding here (pb-23 or pb-26 equivalent) */}
       <div
         className={`flex-1 w-full flex flex-col justify-end items-center relative ${containerPadding} transition-all duration-500`}
       >
@@ -143,23 +126,22 @@ const GrowthSpot = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 1.2, opacity: 0 }}
               transition={{ type: "spring", bounce: 0.5 }}
-              // Applied your specific margins
               className={`z-10 relative ${treeStyle.margin}`}
             >
               <img
                 src={getCurrentStageImage()}
                 alt="Tree Stage"
                 className={`${treeStyle.size} object-contain filter drop-shadow-2xl transition-all duration-500`}
+                style={{ filter: currentTreeData.colorFilter }}
               />
             </motion.div>
           ) : (
-            <div className="text-white/50 text-sm mb-10 font-bold tracking-widest uppercase z-10">
+            <div className="text-emerald-600 text-sm mb-20 font-bold tracking-widest uppercase z-10">
               Plot Empty
             </div>
           )}
         </AnimatePresence>
 
-        {/* The Ground */}
         <div className="absolute bottom-0 w-[120%] h-48 bg-gradient-to-t from-emerald-800 to-emerald-600 rounded-[50%] -mb-12 shadow-inner border-t-4 border-emerald-400/30"></div>
       </div>
 
@@ -233,7 +215,7 @@ const GrowthSpot = () => {
                 <div className="space-y-3">
                   {TREES_DATA.map((tree) => {
                     const isUnlocked =
-                      gameState.totalTreesGrown >= tree.unlockCount;
+                      gameState.grownTrees.length >= tree.unlockCount;
 
                     return (
                       <button
@@ -255,6 +237,7 @@ const GrowthSpot = () => {
                               src={tree.stages[tree.stages.length - 1].image}
                               alt={tree.name}
                               className="w-full h-full object-contain"
+                              style={{ filter: tree.colorFilter }}
                             />
                           ) : (
                             <span className="text-2xl">🔒</span>
@@ -271,7 +254,7 @@ const GrowthSpot = () => {
                           ) : (
                             <p className="text-sm text-red-400 font-bold">
                               Requires {tree.unlockCount} trees (
-                              {gameState.totalTreesGrown}/{tree.unlockCount})
+                              {gameState.grownTrees.length}/{tree.unlockCount})
                             </p>
                           )}
                         </div>
@@ -303,30 +286,43 @@ const GrowthSpot = () => {
                 <p className="text-gray-500 text-sm mb-6">
                   Total Trees Grown:{" "}
                   <span className="font-bold text-emerald-600 text-lg">
-                    {gameState.totalTreesGrown}
+                    {gameState.grownTrees.length}
                   </span>
                 </p>
 
-                {gameState.totalTreesGrown === 0 ? (
+                {gameState.grownTrees.length === 0 ? (
                   <div className="py-10 text-gray-400 italic">
                     No trees yet. Start planting! 🌱
                   </div>
                 ) : (
-                  <div className="grid grid-cols-5 gap-2 justify-items-center max-h-60 overflow-y-auto p-2 bg-emerald-50 rounded-xl border border-emerald-100">
-                    {Array.from({ length: gameState.totalTreesGrown }).map(
-                      (_, i) => (
+                  <div className="grid grid-cols-4 gap-4 justify-items-center max-h-60 overflow-y-auto p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                    {/* Render ACTUAL COLLECTED TREES */}
+                    {gameState.grownTrees.map((treeId, i) => {
+                      const treeData = TREES_DATA.find((t) => t.id === treeId);
+                      // Fallback just in case ID is lost
+                      const image = treeData
+                        ? treeData.stages[treeData.stages.length - 1].image
+                        : "";
+                      const filter = treeData ? treeData.colorFilter : "none";
+
+                      return (
                         <motion.div
                           key={i}
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: i * 0.05 }}
-                          className="text-2xl"
-                          title="A tree you grew!"
+                          className="w-14 h-14 bg-white rounded-full p-2 shadow-sm border border-emerald-200 flex items-center justify-center"
+                          title={treeData ? treeData.name : "Unknown Tree"}
                         >
-                          🌲
+                          <img
+                            src={image}
+                            alt="tree"
+                            className="w-full h-full object-contain"
+                            style={{ filter: filter }}
+                          />
                         </motion.div>
-                      )
-                    )}
+                      );
+                    })}
                   </div>
                 )}
 

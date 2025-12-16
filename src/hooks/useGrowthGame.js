@@ -2,21 +2,35 @@ import { useState, useEffect } from "react";
 import { TREES_DATA } from "../data/GrowthData";
 
 // THE RULES
-// const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
-const COOLDOWN_TIME = 10 * 1000; // Testing
+const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
+// const COOLDOWN_TIME = 1 * 1000; // Testing
 
 export const useGrowthGame = () => {
   // --- STATE ---
   const [gameState, setGameState] = useState(() => {
     const saved = localStorage.getItem("growth_save");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          currentTreeId: null,
-          growthCount: 0,
-          lastWatered: 0,
-          totalTreesGrown: 0,
-        };
+    let parsed = saved ? JSON.parse(saved) : null;
+
+    // Default State
+    const defaultState = {
+      currentTreeId: null,
+      growthCount: 0,
+      lastWatered: 0,
+      grownTrees: [], // NEW: Array to store history
+    };
+
+    if (!parsed) return defaultState;
+
+    // --- MIGRATION ---
+    if (
+      parsed.totalTreesGrown > 0 &&
+      (!parsed.grownTrees || parsed.grownTrees.length === 0)
+    ) {
+      parsed.grownTrees = Array(parsed.totalTreesGrown).fill("tree_oak");
+    }
+
+    // Ensure the new array exists
+    return { ...defaultState, ...parsed };
   });
 
   const [timeString, setTimeString] = useState("");
@@ -29,7 +43,6 @@ export const useGrowthGame = () => {
 
   // --- TIMER LOOP ---
   useEffect(() => {
-    // 1. Define the check function
     const checkTimer = () => {
       const now = Date.now();
 
@@ -54,14 +67,10 @@ export const useGrowthGame = () => {
       }
     };
 
-    // 2. Run it IMMEDIATELY (Fixes the "Ready!" flash bug)
     checkTimer();
-
-    // 3. Set interval to keep running it
     const interval = setInterval(checkTimer, 1000);
-
     return () => clearInterval(interval);
-  }, [gameState.lastWatered, gameState.currentTreeId]); // Re-runs instantly when these change
+  }, [gameState.lastWatered, gameState.currentTreeId]);
 
   // --- ACTIONS ---
 
@@ -78,14 +87,11 @@ export const useGrowthGame = () => {
     const now = Date.now();
     const timeSinceLastWater = now - gameState.lastWatered;
 
-    // Strict check
     if (gameState.lastWatered !== 0 && timeSinceLastWater < COOLDOWN_TIME) {
       return;
     }
 
     setIsReady(false);
-
-    // Force set the time string immediately to prevent UI flash
     setTimeString("23h 59m 59s");
 
     setGameState((prev) => ({
@@ -98,7 +104,8 @@ export const useGrowthGame = () => {
   const harvestTree = () => {
     setGameState((prev) => ({
       ...prev,
-      totalTreesGrown: prev.totalTreesGrown + 1,
+      // Add the current tree ID to the history array
+      grownTrees: [...prev.grownTrees, prev.currentTreeId],
       currentTreeId: null,
       growthCount: 0,
       lastWatered: 0,
@@ -116,13 +123,9 @@ export const useGrowthGame = () => {
 
   const getCurrentStageImage = () => {
     if (!currentTreeData) return null;
-
     const stage = [...currentTreeData.stages]
       .reverse()
       .find((s) => gameState.growthCount >= s.minDay);
-
-    // FIXED: Return stage image OR the first stage (seed) if something goes wrong.
-    // No more emojis!
     return stage ? stage.image : currentTreeData.stages[0].image;
   };
 
