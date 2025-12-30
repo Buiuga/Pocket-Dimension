@@ -12,8 +12,7 @@ const features = [
   { id: 5, title: "Bubble Wrap", path: "/bubbles", icon: "🫧" },
   { id: 6, title: "Starry Sky", path: "/stars", icon: "🌌" },
   { id: 7, title: "Dopamine Inc", path: "/dopamineInc", icon: "⚡" },
-  { id: 8, title: "Interactive Story", path: "/story", icon: "📖" },
-  { id: 9, title: "The Growth Spot", path: "/growth", icon: "🌱" },
+  { id: 8, title: "The Growth Spot", path: "/growth", icon: "🌱" },
 ];
 
 const Dashboard = () => {
